@@ -544,11 +544,12 @@
             }
             // 按日期分組
             const recordsByDate = {};
-            dietRecords.forEach(record => {
+            dietRecords.forEach((record, idx) => {
                 if (!recordsByDate[record.date]) {
                     recordsByDate[record.date] = [];
                 }
-                recordsByDate[record.date].push(record);
+                // 加入 index 方便刪除
+                recordsByDate[record.date].push({...record, _idx: idx});
             });
             // 計算每日平均餐費和總熱量
             const dailyStats = {};
@@ -596,20 +597,23 @@
                 `;
                 records.sort((a, b) => a.mealTime.localeCompare(b.mealTime)).forEach(record => {
                     html += `
-                        <div class="bg-gray-50 p-3 rounded-md record-item">
-                            <div class="flex justify-between">
-                                <div class="font-medium">${record.mealName}</div>
-                                <div class="text-sm text-gray-500">${record.mealTime}</div>
+                        <div class="bg-gray-50 p-3 rounded-md record-item flex justify-between items-center">
+                            <div>
+                                <div class="flex justify-between">
+                                    <div class="font-medium">${record.mealName}</div>
+                                    <div class="text-sm text-gray-500">${record.mealTime}</div>
+                                </div>
+                                <div class="text-sm mt-1">
+                                    <span class="mr-2">蛋白質: ${record.proteinCount || 0}</span>
+                                    <span class="mr-2">蔬菜: ${record.veggieCount || 0}</span>
+                                    <span>水果: ${record.fruitCount || 0}</span>
+                                </div>
+                                <div class="text-sm text-gray-500 mt-1">
+                                    ${record.mealCalories ? `熱量: ${record.mealCalories} kcal · ` : ''}
+                                    ${record.mealCost ? `花費: ${record.mealCost} 元` : ''}
+                                </div>
                             </div>
-                            <div class="text-sm mt-1">
-                                <span class="mr-2">蛋白質: ${record.proteinCount || 0}</span>
-                                <span class="mr-2">蔬菜: ${record.veggieCount || 0}</span>
-                                <span>水果: ${record.fruitCount || 0}</span>
-                            </div>
-                            <div class="text-sm text-gray-500 mt-1">
-                                ${record.mealCalories ? `熱量: ${record.mealCalories} kcal · ` : ''}
-                                ${record.mealCost ? `花費: ${record.mealCost} 元` : ''}
-                            </div>
+                            <button class="delete-record-btn text-red-500 ml-2" data-type="diet" data-idx="${record._idx}">刪除</button>
                         </div>
                     `;
                 });
@@ -619,6 +623,16 @@
                 `;
             });
             showModal('飲食紀錄', html);
+            // 新增事件代理
+            document.getElementById('modalContent').onclick = function(e) {
+                if (e.target.classList.contains('delete-record-btn')) {
+                    const idx = parseInt(e.target.getAttribute('data-idx'));
+                    const records = JSON.parse(localStorage.getItem('dietRecords'));
+                    records.splice(idx, 1);
+                    localStorage.setItem('dietRecords', JSON.stringify(records));
+                    viewDietRecordsBtn.click();
+                }
+            };
         });
         // --- 飲水分頁 ---
         const addBottleBtn = document.getElementById('addBottleBtn');
@@ -741,11 +755,11 @@
                 return;
             }
             const recordsByDate = {};
-            waterRecords.forEach(record => {
+            waterRecords.forEach((record, idx) => {
                 if (!recordsByDate[record.date]) {
                     recordsByDate[record.date] = [];
                 }
-                recordsByDate[record.date].push(record);
+                recordsByDate[record.date].push({...record, _idx: idx});
             });
             const dailyTotals = {};
             Object.keys(recordsByDate).forEach(date => {
@@ -774,14 +788,17 @@
                 records.sort((a, b) => a.timestamp - b.timestamp).forEach(record => {
                     const time = new Date(record.timestamp).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
                     html += `
-                        <div class="bg-gray-50 p-3 rounded-md record-item">
-                            <div class="flex justify-between">
-                                <div class="font-medium">${record.bottleName}</div>
-                                <div class="text-sm text-gray-500">${time}</div>
+                        <div class="bg-gray-50 p-3 rounded-md record-item flex justify-between items-center">
+                            <div>
+                                <div class="flex justify-between">
+                                    <div class="font-medium">${record.bottleName}</div>
+                                    <div class="text-sm text-gray-500">${time}</div>
+                                </div>
+                                <div class="text-sm text-cyan-600 mt-1">
+                                    +${record.capacity}cc
+                                </div>
                             </div>
-                            <div class="text-sm text-cyan-600 mt-1">
-                                +${record.capacity}cc
-                            </div>
+                            <button class="delete-record-btn text-red-500 ml-2" data-type="water" data-idx="${record._idx}">刪除</button>
                         </div>
                     `;
                 });
@@ -791,6 +808,15 @@
                 `;
             });
             showModal('飲水紀錄', html);
+            document.getElementById('modalContent').onclick = function(e) {
+                if (e.target.classList.contains('delete-record-btn')) {
+                    const idx = parseInt(e.target.getAttribute('data-idx'));
+                    const records = JSON.parse(localStorage.getItem('waterRecords'));
+                    records.splice(idx, 1);
+                    localStorage.setItem('waterRecords', JSON.stringify(records));
+                    viewWaterRecordsBtn.click();
+                }
+            };
         });
         // --- 運動分頁 ---
         if (!localStorage.getItem('exerciseRecords')) localStorage.setItem('exerciseRecords', JSON.stringify([]));
@@ -873,19 +899,19 @@
                 showModal('運動紀錄', '<div class="text-center py-8 text-gray-500">尚無運動紀錄</div>');
                 return;
             }
-            // 按日期分組
             const recordsByDate = {};
-            exerciseRecords.forEach(record => {
+            exerciseRecords.forEach((record, idx) => {
                 const date = record.time ? record.time.split('T')[0] : '未知日期';
                 if (!recordsByDate[date]) recordsByDate[date] = [];
-                recordsByDate[date].push(record);
+                recordsByDate[date].push({...record, _idx: idx});
             });
             let html = '';
             Object.keys(recordsByDate).sort().reverse().forEach(date => {
                 const records = recordsByDate[date];
                 html += `<div class="mb-6"><h4 class="font-medium mb-2">${formatDate(date)}</h4><div class="space-y-2">`;
                 records.forEach(record => {
-                    html += `<div class="bg-gray-50 p-3 rounded-md record-item">`;
+                    html += `<div class="bg-gray-50 p-3 rounded-md record-item flex justify-between items-center">`;
+                    html += `<div>`;
                     html += `<div class="font-medium mb-1">${record.type}</div>`;
                     html += `<div class="text-sm text-gray-500 mb-1">${record.time ? new Date(record.time).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' }) : ''}，時長: ${record.duration} 分鐘</div>`;
                     if (["跑步","健走","游泳","騎車"].includes(record.type)) {
@@ -903,10 +929,21 @@
                         html += `<div class="text-sm">備註: ${record.note||''}</div>`;
                     }
                     html += `</div>`;
+                    html += `<button class="delete-record-btn text-red-500 ml-2" data-type="exercise" data-idx="${record._idx}">刪除</button>`;
+                    html += `</div>`;
                 });
                 html += `</div></div>`;
             });
             showModal('運動紀錄', html);
+            document.getElementById('modalContent').onclick = function(e) {
+                if (e.target.classList.contains('delete-record-btn')) {
+                    const idx = parseInt(e.target.getAttribute('data-idx'));
+                    const records = JSON.parse(localStorage.getItem('exerciseRecords'));
+                    records.splice(idx, 1);
+                    localStorage.setItem('exerciseRecords', JSON.stringify(records));
+                    viewExerciseRecordsBtn.click();
+                }
+            };
         });
         // --- 生理分頁 ---
         if (!localStorage.getItem('heightWeightRecords')) localStorage.setItem('heightWeightRecords', JSON.stringify([]));
@@ -956,14 +993,27 @@
                 return;
             }
             let html = '<div class="space-y-2">';
-            records.slice().reverse().forEach(r => {
-                html += `<div class='bg-gray-50 p-3 rounded-md record-item'>`;
+            records.slice().reverse().forEach((r, idx) => {
+                const realIdx = records.length - 1 - idx;
+                html += `<div class='bg-gray-50 p-3 rounded-md record-item flex justify-between items-center'>`;
+                html += `<div>`;
                 html += `<div>時間：${new Date(r.time).toLocaleString('zh-TW')}</div>`;
                 html += `<div>身高：${r.height} cm，體重：${r.weight} kg，BMI：${r.bmi}</div>`;
+                html += `</div>`;
+                html += `<button class="delete-record-btn text-red-500 ml-2" data-type="heightWeight" data-idx="${realIdx}">刪除</button>`;
                 html += `</div>`;
             });
             html += '</div>';
             showModal('身高體重紀錄', html);
+            document.getElementById('modalContent').onclick = function(e) {
+                if (e.target.classList.contains('delete-record-btn')) {
+                    const idx = parseInt(e.target.getAttribute('data-idx'));
+                    const records = JSON.parse(localStorage.getItem('heightWeightRecords'));
+                    records.splice(idx, 1);
+                    localStorage.setItem('heightWeightRecords', JSON.stringify(records));
+                    viewHeightWeightRecordsBtn.click();
+                }
+            };
         });
         // 儲存體脂/內臟脂肪/肌肉率
         const saveBodyCompBtn = document.getElementById('saveBodyComp');
@@ -992,14 +1042,27 @@
                 return;
             }
             let html = '<div class="space-y-2">';
-            records.slice().reverse().forEach(r => {
-                html += `<div class='bg-gray-50 p-3 rounded-md record-item'>`;
+            records.slice().reverse().forEach((r, idx) => {
+                const realIdx = records.length - 1 - idx;
+                html += `<div class='bg-gray-50 p-3 rounded-md record-item flex justify-between items-center'>`;
+                html += `<div>`;
                 html += `<div>時間：${new Date(r.time).toLocaleString('zh-TW')}</div>`;
                 html += `<div>體脂率：${r.fat||'-'}%，內臟脂肪：${r.vis||'-'}，肌肉率：${r.muscle||'-'}%</div>`;
+                html += `</div>`;
+                html += `<button class="delete-record-btn text-red-500 ml-2" data-type="bodyComp" data-idx="${realIdx}">刪除</button>`;
                 html += `</div>`;
             });
             html += '</div>';
             showModal('體脂/內臟脂肪/肌肉率紀錄', html);
+            document.getElementById('modalContent').onclick = function(e) {
+                if (e.target.classList.contains('delete-record-btn')) {
+                    const idx = parseInt(e.target.getAttribute('data-idx'));
+                    const records = JSON.parse(localStorage.getItem('bodyCompRecords'));
+                    records.splice(idx, 1);
+                    localStorage.setItem('bodyCompRecords', JSON.stringify(records));
+                    viewBodyCompRecordsBtn.click();
+                }
+            };
         });
         // 儲存血壓
         const saveBPBtn = document.getElementById('saveBP');
@@ -1026,14 +1089,27 @@
                 return;
             }
             let html = '<div class="space-y-2">';
-            records.slice().reverse().forEach(r => {
-                html += `<div class='bg-gray-50 p-3 rounded-md record-item'>`;
+            records.slice().reverse().forEach((r, idx) => {
+                const realIdx = records.length - 1 - idx;
+                html += `<div class='bg-gray-50 p-3 rounded-md record-item flex justify-between items-center'>`;
+                html += `<div>`;
                 html += `<div>時間：${new Date(r.time).toLocaleString('zh-TW')}</div>`;
                 html += `<div>收縮壓：${r.sys}，舒張壓：${r.dia}</div>`;
+                html += `</div>`;
+                html += `<button class="delete-record-btn text-red-500 ml-2" data-type="bp" data-idx="${realIdx}">刪除</button>`;
                 html += `</div>`;
             });
             html += '</div>';
             showModal('血壓紀錄', html);
+            document.getElementById('modalContent').onclick = function(e) {
+                if (e.target.classList.contains('delete-record-btn')) {
+                    const idx = parseInt(e.target.getAttribute('data-idx'));
+                    const records = JSON.parse(localStorage.getItem('bpRecords'));
+                    records.splice(idx, 1);
+                    localStorage.setItem('bpRecords', JSON.stringify(records));
+                    viewBPRecordsBtn.click();
+                }
+            };
         });
         // 儲存血糖
         const saveSugarBtn = document.getElementById('saveSugar');
@@ -1060,14 +1136,27 @@
                 return;
             }
             let html = '<div class="space-y-2">';
-            records.slice().reverse().forEach(r => {
-                html += `<div class='bg-gray-50 p-3 rounded-md record-item'>`;
+            records.slice().reverse().forEach((r, idx) => {
+                const realIdx = records.length - 1 - idx;
+                html += `<div class='bg-gray-50 p-3 rounded-md record-item flex justify-between items-center'>`;
+                html += `<div>`;
                 html += `<div>時間：${new Date(r.time).toLocaleString('zh-TW')}</div>`;
                 html += `<div>空腹/飯前：${r.fasting||'-'}，飯後：${r.after||'-'}</div>`;
+                html += `</div>`;
+                html += `<button class="delete-record-btn text-red-500 ml-2" data-type="sugar" data-idx="${realIdx}">刪除</button>`;
                 html += `</div>`;
             });
             html += '</div>';
             showModal('血糖紀錄', html);
+            document.getElementById('modalContent').onclick = function(e) {
+                if (e.target.classList.contains('delete-record-btn')) {
+                    const idx = parseInt(e.target.getAttribute('data-idx'));
+                    const records = JSON.parse(localStorage.getItem('sugarRecords'));
+                    records.splice(idx, 1);
+                    localStorage.setItem('sugarRecords', JSON.stringify(records));
+                    viewSugarRecordsBtn.click();
+                }
+            };
         });
         // --- 睡眠分頁 ---
         if (!localStorage.getItem('sleepRecords')) localStorage.setItem('sleepRecords', JSON.stringify([]));
@@ -1111,7 +1200,6 @@
                 showModal('睡眠紀錄', '<div class="text-center py-8 text-gray-500">尚無睡眠紀錄</div>');
                 return;
             }
-            // 過去七天平均
             const today = new Date();
             const last7 = [];
             for (let i = 0; i < 7; i++) {
@@ -1123,7 +1211,6 @@
             last7.forEach(date => {
                 const rec = records.filter(r => r.date === date);
                 if (rec.length) {
-                    // 取同日多筆的最大時長
                     const max = Math.max(...rec.map(r=>r.duration));
                     totalMins += max;
                     count++;
@@ -1137,23 +1224,38 @@
                 avgStr = `<div class='mb-2 text-blue-700 font-medium'>過去七天平均睡眠時長：${h}小時${m}分鐘</div>`;
             }
             let html = avgStr + '<div class="space-y-2">';
-            records.slice().reverse().forEach(r => {
+            records.slice().reverse().forEach((r, idx) => {
+                const realIdx = records.length - 1 - idx;
                 const h = Math.floor(r.duration / 60);
                 const m = r.duration % 60;
-                html += `<div class='bg-gray-50 p-3 rounded-md record-item'>`;
+                html += `<div class='bg-gray-50 p-3 rounded-md record-item flex justify-between items-center'>`;
+                html += `<div>`;
                 html += `<div>日期：${r.date}，時長：${h}小時${m}分鐘</div>`;
                 html += `<div>就寢：${r.start}，起床：${r.end}</div>`;
                 html += `<div>睡眠品質：${r.quality} 分</div>`;
                 html += `</div>`;
+                html += `<button class="delete-record-btn text-red-500 ml-2" data-type="sleep" data-idx="${realIdx}">刪除</button>`;
+                html += `</div>`;
             });
             html += '</div>';
             showModal('睡眠紀錄', html);
+            document.getElementById('modalContent').onclick = function(e) {
+                if (e.target.classList.contains('delete-record-btn')) {
+                    const idx = parseInt(e.target.getAttribute('data-idx'));
+                    const records = JSON.parse(localStorage.getItem('sleepRecords'));
+                    records.splice(idx, 1);
+                    localStorage.setItem('sleepRecords', JSON.stringify(records));
+                    viewSleepRecordsBtn.click();
+                }
+            };
         });
         // --- 工具 ---
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('zh-TW', { month: 'long', day: 'numeric' });
         }
+        // 每分鐘自動檢查日期是否變更，確保每日歸零
+        setInterval(checkAndUpdateDailyData, 60 * 1000);
     });
     </script>
 </body>
