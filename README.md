@@ -78,18 +78,27 @@
             <div class="mb-6">
                 <h2 class="text-lg font-semibold mb-3">新增飲食紀錄</h2>
                 <div class="grid grid-cols-3 gap-3 mb-4">
-                    <button id="addProtein" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-2 px-4 rounded-lg transition">
-                        <span class="block text-2xl">🥩</span>
-                        蛋白質 +1
-                    </button>
-                    <button id="addVeggie" class="bg-green-100 hover:bg-green-200 text-green-800 font-medium py-2 px-4 rounded-lg transition">
-                        <span class="block text-2xl">🥦</span>
-                        蔬菜 +1
-                    </button>
-                    <button id="addFruit" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-medium py-2 px-4 rounded-lg transition">
-                        <span class="block text-2xl">🍎</span>
-                        水果 +1
-                    </button>
+                    <div class="flex flex-col items-center">
+                        <button id="addProtein" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-2 px-4 rounded-lg transition mb-1">
+                            <span class="block text-2xl">🥩</span>
+                            蛋白質 +1
+                        </button>
+                        <button id="subProtein" class="bg-blue-50 hover:bg-blue-100 text-blue-800 font-medium py-1 px-2 rounded transition text-xs">-1</button>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <button id="addVeggie" class="bg-green-100 hover:bg-green-200 text-green-800 font-medium py-2 px-4 rounded-lg transition mb-1">
+                            <span class="block text-2xl">🥦</span>
+                            蔬菜 +1
+                        </button>
+                        <button id="subVeggie" class="bg-green-50 hover:bg-green-100 text-green-800 font-medium py-1 px-2 rounded transition text-xs">-1</button>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <button id="addFruit" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-medium py-2 px-4 rounded-lg transition mb-1">
+                            <span class="block text-2xl">🍎</span>
+                            水果 +1
+                        </button>
+                        <button id="subFruit" class="bg-yellow-50 hover:bg-yellow-100 text-yellow-800 font-medium py-1 px-2 rounded transition text-xs">-1</button>
+                    </div>
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">餐點名稱</label>
@@ -454,29 +463,62 @@
             renderBottles();
         }
         // --- 飲食分頁 ---
+        const addProteinBtnRaw = document.getElementById('addProtein');
+        addProteinBtnRaw.replaceWith(addProteinBtnRaw.cloneNode(true));
         const addProteinBtn = document.getElementById('addProtein');
-        const addVeggieBtn = document.getElementById('addVeggie');
-        const addFruitBtn = document.getElementById('addFruit');
-        const saveMealBtn = document.getElementById('saveMeal');
-        const viewDietRecordsBtn = document.getElementById('viewDietRecords');
         addProteinBtn.addEventListener('click', () => {
             const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
             dailyNutrition.protein += 1;
             localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
             updateNutritionDisplay();
         });
+        const subProteinBtnRaw = document.getElementById('subProtein');
+        subProteinBtnRaw.replaceWith(subProteinBtnRaw.cloneNode(true));
+        const subProteinBtn = document.getElementById('subProtein');
+        subProteinBtn.addEventListener('click', () => {
+            const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
+            dailyNutrition.protein = Math.max(0, dailyNutrition.protein - 1);
+            localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
+            updateNutritionDisplay();
+        });
+        const addVeggieBtnRaw = document.getElementById('addVeggie');
+        addVeggieBtnRaw.replaceWith(addVeggieBtnRaw.cloneNode(true));
+        const addVeggieBtn = document.getElementById('addVeggie');
         addVeggieBtn.addEventListener('click', () => {
             const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
             dailyNutrition.veggie += 1;
             localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
             updateNutritionDisplay();
         });
+        const subVeggieBtnRaw = document.getElementById('subVeggie');
+        subVeggieBtnRaw.replaceWith(subVeggieBtnRaw.cloneNode(true));
+        const subVeggieBtn = document.getElementById('subVeggie');
+        subVeggieBtn.addEventListener('click', () => {
+            const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
+            dailyNutrition.veggie = Math.max(0, dailyNutrition.veggie - 1);
+            localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
+            updateNutritionDisplay();
+        });
+        const addFruitBtnRaw = document.getElementById('addFruit');
+        addFruitBtnRaw.replaceWith(addFruitBtnRaw.cloneNode(true));
+        const addFruitBtn = document.getElementById('addFruit');
         addFruitBtn.addEventListener('click', () => {
             const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
             dailyNutrition.fruit += 1;
             localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
             updateNutritionDisplay();
         });
+        const subFruitBtnRaw = document.getElementById('subFruit');
+        subFruitBtnRaw.replaceWith(subFruitBtnRaw.cloneNode(true));
+        const subFruitBtn = document.getElementById('subFruit');
+        subFruitBtn.addEventListener('click', () => {
+            const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
+            dailyNutrition.fruit = Math.max(0, dailyNutrition.fruit - 1);
+            localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
+            updateNutritionDisplay();
+        });
+        const saveMealBtn = document.getElementById('saveMeal');
+        const viewDietRecordsBtn = document.getElementById('viewDietRecords');
         function updateNutritionDisplay() {
             const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
             document.getElementById('proteinCount').textContent = dailyNutrition.protein;
