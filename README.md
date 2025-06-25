@@ -78,26 +78,17 @@
             <div class="mb-6">
                 <h2 class="text-lg font-semibold mb-3">新增飲食紀錄</h2>
                 <div class="grid grid-cols-3 gap-3 mb-4">
-                    <div class="flex flex-col items-center">
-                        <button id="addProtein" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-2 px-4 rounded-lg transition mb-1">
-                            <span class="block text-2xl">🥩</span>
-                            蛋白質 +1
-                        </button>
-                        <button id="subProtein" class="bg-blue-50 hover:bg-blue-100 text-blue-800 font-medium py-1 px-2 rounded transition text-xs">-1</button>
+                    <div class="flex flex-row items-center justify-center space-x-2">
+                        <button id="addProtein" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded-lg transition text-lg flex items-center">🥩 +1</button>
+                        <button id="subProtein" class="bg-blue-50 hover:bg-blue-100 text-blue-800 font-medium py-1 px-2 rounded-lg border border-blue-300 transition text-sm flex items-center">-1</button>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <button id="addVeggie" class="bg-green-100 hover:bg-green-200 text-green-800 font-medium py-2 px-4 rounded-lg transition mb-1">
-                            <span class="block text-2xl">🥦</span>
-                            蔬菜 +1
-                        </button>
-                        <button id="subVeggie" class="bg-green-50 hover:bg-green-100 text-green-800 font-medium py-1 px-2 rounded transition text-xs">-1</button>
+                    <div class="flex flex-row items-center justify-center space-x-2">
+                        <button id="addVeggie" class="bg-green-100 hover:bg-green-200 text-green-800 font-bold py-2 px-4 rounded-lg transition text-lg flex items-center">🥦 +1</button>
+                        <button id="subVeggie" class="bg-green-50 hover:bg-green-100 text-green-800 font-medium py-1 px-2 rounded-lg border border-green-300 transition text-sm flex items-center">-1</button>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <button id="addFruit" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-medium py-2 px-4 rounded-lg transition mb-1">
-                            <span class="block text-2xl">🍎</span>
-                            水果 +1
-                        </button>
-                        <button id="subFruit" class="bg-yellow-50 hover:bg-yellow-100 text-yellow-800 font-medium py-1 px-2 rounded transition text-xs">-1</button>
+                    <div class="flex flex-row items-center justify-center space-x-2">
+                        <button id="addFruit" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold py-2 px-4 rounded-lg transition text-lg flex items-center">🍎 +1</button>
+                        <button id="subFruit" class="bg-yellow-50 hover:bg-yellow-100 text-yellow-800 font-medium py-1 px-2 rounded-lg border border-yellow-300 transition text-sm flex items-center">-1</button>
                     </div>
                 </div>
                 <div class="mb-4">
