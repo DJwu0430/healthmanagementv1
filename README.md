@@ -635,9 +635,8 @@
                 const records = recordsByDate[date];
                 const totalCost = records.reduce((sum, record) => sum + (record.mealCost || 0), 0);
                 const totalCalories = records.reduce((sum, record) => sum + (record.mealCalories || 0), 0);
-                const mealCount = records.length;
                 dailyStats[date] = {
-                    avgCost: mealCount > 0 ? totalCost / mealCount : 0,
+                    totalCost: totalCost,
                     totalCalories: totalCalories
                 };
             });
@@ -654,7 +653,7 @@
                         <div class="flex justify-between items-center mb-2">
                             <h4 class="font-medium">${formatDate(date)}</h4>
                             <div class="text-sm text-gray-500">
-                                <div>平均餐費: ${dailyStats[date].avgCost.toFixed(0)} 元</div>
+                                <div>總花費: ${dailyStats[date].totalCost} 元</div>
                                 <div>總熱量: ${dailyStats[date].totalCalories} kcal</div>
                             </div>
                         </div>
