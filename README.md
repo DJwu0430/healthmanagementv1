@@ -74,21 +74,34 @@
                         <div id="fruitBar" class="progress-bar bg-yellow-500 h-2.5 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1">
+                        <span>澱粉 (<span id="starchCount">0</span>/2份)</span>
+                        <span id="starchPercent">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="starchBar" class="progress-bar bg-orange-500 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
             </div>
             <div class="mb-6">
                 <h2 class="text-lg font-semibold mb-3">新增飲食紀錄</h2>
-                <div class="grid grid-cols-3 gap-3 mb-4">
-                    <div class="flex flex-row items-center justify-center space-x-2">
-                        <button id="addProtein" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded-lg transition text-lg flex items-center">🥩 +1</button>
-                        <button id="subProtein" class="bg-blue-50 hover:bg-blue-100 text-blue-800 font-medium py-1 px-2 rounded-lg border border-blue-300 transition text-sm flex items-center">-1</button>
+                <div class="grid grid-cols-4 gap-2 mb-4">
+                    <div class="flex flex-row items-center justify-center space-x-1">
+                        <button id="addProtein" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-3 rounded-lg transition text-md flex items-center">🥩+1</button>
+                        <button id="subProtein" class="bg-blue-50 hover:bg-blue-100 text-blue-800 font-medium p-1 rounded-lg border border-blue-300 transition text-xs flex items-center">-1</button>
                     </div>
-                    <div class="flex flex-row items-center justify-center space-x-2">
-                        <button id="addVeggie" class="bg-green-100 hover:bg-green-200 text-green-800 font-bold py-2 px-4 rounded-lg transition text-lg flex items-center">🥦 +1</button>
-                        <button id="subVeggie" class="bg-green-50 hover:bg-green-100 text-green-800 font-medium py-1 px-2 rounded-lg border border-green-300 transition text-sm flex items-center">-1</button>
+                    <div class="flex flex-row items-center justify-center space-x-1">
+                        <button id="addVeggie" class="bg-green-100 hover:bg-green-200 text-green-800 font-bold py-2 px-3 rounded-lg transition text-md flex items-center">🥦+1</button>
+                        <button id="subVeggie" class="bg-green-50 hover:bg-green-100 text-green-800 font-medium p-1 rounded-lg border border-green-300 transition text-xs flex items-center">-1</button>
                     </div>
-                    <div class="flex flex-row items-center justify-center space-x-2">
-                        <button id="addFruit" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold py-2 px-4 rounded-lg transition text-lg flex items-center">🍎 +1</button>
-                        <button id="subFruit" class="bg-yellow-50 hover:bg-yellow-100 text-yellow-800 font-medium py-1 px-2 rounded-lg border border-yellow-300 transition text-sm flex items-center">-1</button>
+                    <div class="flex flex-row items-center justify-center space-x-1">
+                        <button id="addFruit" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold py-2 px-3 rounded-lg transition text-md flex items-center">🍎+1</button>
+                        <button id="subFruit" class="bg-yellow-50 hover:bg-yellow-100 text-yellow-800 font-medium p-1 rounded-lg border border-yellow-300 transition text-xs flex items-center">-1</button>
+                    </div>
+                    <div class="flex flex-row items-center justify-center space-x-1">
+                        <button id="addStarch" class="bg-orange-100 hover:bg-orange-200 text-orange-800 font-bold py-2 px-3 rounded-lg transition text-md flex items-center">🍚+1</button>
+                        <button id="subStarch" class="bg-orange-50 hover:bg-orange-100 text-orange-800 font-medium p-1 rounded-lg border border-orange-300 transition text-xs flex items-center">-1</button>
                     </div>
                 </div>
                 <div class="mb-4">
@@ -109,7 +122,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">熱量 (kcal)</label>
                     <input type="number" id="mealCalories" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="選填">
                 </div>
-                <div class="grid grid-cols-3 gap-3 mb-4">
+                <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">蛋白質 (份)</label>
                         <input type="number" id="mealProtein" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" value="0" min="0">
@@ -121,6 +134,10 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">水果 (份)</label>
                         <input type="number" id="mealFruit" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" value="0" min="0">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">澱粉 (份)</label>
+                        <input type="number" id="mealStarch" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" value="0" min="0">
                     </div>
                 </div>
                 <button id="saveMeal" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition">儲存飲食紀錄</button>
@@ -412,7 +429,8 @@
                 date: getCurrentDateString(),
                 protein: 0,
                 veggie: 0,
-                fruit: 0
+                fruit: 0,
+                starch: 0
             }));
         }
         if (!localStorage.getItem('waterBottles')) {
@@ -440,6 +458,7 @@
                 dailyNutrition.protein = 0;
                 dailyNutrition.veggie = 0;
                 dailyNutrition.fruit = 0;
+                dailyNutrition.starch = 0;
                 localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
             }
             // 檢查飲水量
@@ -508,6 +527,24 @@
             localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
             updateNutritionDisplay();
         });
+        const addStarchBtnRaw = document.getElementById('addStarch');
+        addStarchBtnRaw.replaceWith(addStarchBtnRaw.cloneNode(true));
+        const addStarchBtn = document.getElementById('addStarch');
+        addStarchBtn.addEventListener('click', () => {
+            const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
+            dailyNutrition.starch += 1;
+            localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
+            updateNutritionDisplay();
+        });
+        const subStarchBtnRaw = document.getElementById('subStarch');
+        subStarchBtnRaw.replaceWith(subStarchBtnRaw.cloneNode(true));
+        const subStarchBtn = document.getElementById('subStarch');
+        subStarchBtn.addEventListener('click', () => {
+            const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
+            dailyNutrition.starch = Math.max(0, dailyNutrition.starch - 1);
+            localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
+            updateNutritionDisplay();
+        });
         const saveMealBtn = document.getElementById('saveMeal');
         const viewDietRecordsBtn = document.getElementById('viewDietRecords');
         function updateNutritionDisplay() {
@@ -515,15 +552,19 @@
             document.getElementById('proteinCount').textContent = dailyNutrition.protein;
             document.getElementById('veggieCount').textContent = dailyNutrition.veggie;
             document.getElementById('fruitCount').textContent = dailyNutrition.fruit;
+            document.getElementById('starchCount').textContent = dailyNutrition.starch;
             const proteinPercent = Math.min(dailyNutrition.protein / 6 * 100, 100);
             const veggiePercent = Math.min(dailyNutrition.veggie / 3 * 100, 100);
             const fruitPercent = Math.min(dailyNutrition.fruit / 2 * 100, 100);
+            const starchPercent = Math.min(dailyNutrition.starch / 2 * 100, 100);
             document.getElementById('proteinPercent').textContent = `${Math.round(proteinPercent)}%`;
             document.getElementById('veggiePercent').textContent = `${Math.round(veggiePercent)}%`;
             document.getElementById('fruitPercent').textContent = `${Math.round(fruitPercent)}%`;
+            document.getElementById('starchPercent').textContent = `${Math.round(starchPercent)}%`;
             document.getElementById('proteinBar').style.width = `${proteinPercent}%`;
             document.getElementById('veggieBar').style.width = `${veggiePercent}%`;
             document.getElementById('fruitBar').style.width = `${fruitPercent}%`;
+            document.getElementById('starchBar').style.width = `${starchPercent}%`;
         }
         saveMealBtn.addEventListener('click', () => {
             const mealName = document.getElementById('mealName').value;
@@ -533,6 +574,7 @@
             const mealProtein = parseInt(document.getElementById('mealProtein').value) || 0;
             const mealVeggie = parseInt(document.getElementById('mealVeggie').value) || 0;
             const mealFruit = parseInt(document.getElementById('mealFruit').value) || 0;
+            const mealStarch = parseInt(document.getElementById('mealStarch').value) || 0;
             if (!mealName || !mealTime) {
                 alert('請填寫餐點名稱和用餐時間');
                 return;
@@ -547,6 +589,7 @@
                 proteinCount: mealProtein,
                 veggieCount: mealVeggie,
                 fruitCount: mealFruit,
+                starchCount: mealStarch,
                 timestamp: new Date().getTime()
             };
             const dietRecords = JSON.parse(localStorage.getItem('dietRecords'));
@@ -557,6 +600,7 @@
             dailyNutrition.protein += mealProtein;
             dailyNutrition.veggie += mealVeggie;
             dailyNutrition.fruit += mealFruit;
+            dailyNutrition.starch += mealStarch;
             localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
             updateNutritionDisplay();
             // 重置表單
@@ -567,6 +611,7 @@
             document.getElementById('mealProtein').value = '0';
             document.getElementById('mealVeggie').value = '0';
             document.getElementById('mealFruit').value = '0';
+            document.getElementById('mealStarch').value = '0';
             alert('飲食紀錄已儲存');
         });
         viewDietRecordsBtn.addEventListener('click', () => {
@@ -603,6 +648,7 @@
                 const totalProtein = records.reduce((sum, record) => sum + (record.proteinCount || 0), 0);
                 const totalVeggie = records.reduce((sum, record) => sum + (record.veggieCount || 0), 0);
                 const totalFruit = records.reduce((sum, record) => sum + (record.fruitCount || 0), 0);
+                const totalStarch = records.reduce((sum, record) => sum + (record.starchCount || 0), 0);
                 html += `
                     <div class="mb-6">
                         <div class="flex justify-between items-center mb-2">
@@ -625,6 +671,10 @@
                                 <div class="text-yellow-600 font-bold">${totalFruit}</div>
                                 <div class="text-xs text-gray-500">水果</div>
                             </div>
+                            <div class="flex-1 text-center">
+                                <div class="text-orange-600 font-bold">${totalStarch}</div>
+                                <div class="text-xs text-gray-500">澱粉</div>
+                            </div>
                         </div>
                         <div class="space-y-2">
                 `;
@@ -639,7 +689,8 @@
                                 <div class="text-sm mt-1">
                                     <span class="mr-2">蛋白質: ${record.proteinCount || 0}</span>
                                     <span class="mr-2">蔬菜: ${record.veggieCount || 0}</span>
-                                    <span>水果: ${record.fruitCount || 0}</span>
+                                    <span class="mr-2">水果: ${record.fruitCount || 0}</span>
+                                    <span>澱粉: ${record.starchCount || 0}</span>
                                 </div>
                                 <div class="text-sm text-gray-500 mt-1">
                                     ${record.mealCalories ? `熱量: ${record.mealCalories} kcal · ` : ''}
