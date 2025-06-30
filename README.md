@@ -50,8 +50,8 @@
                 <div class="mb-4">
                     <div class="flex justify-between mb-1 items-center">
                         <span>蛋白質 (<span id="proteinCount">0</span>/6份)</span>
-                        <span id="proteinPercent">0%</span>
-                        <div class="flex flex-row items-center space-x-1 ml-2">
+                        <div class="flex items-center space-x-2 ml-auto">
+                            <span id="proteinPercent" class="flex items-center">0%</span>
                             <button id="addProtein" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-1 px-2 rounded-lg transition text-md flex items-center">🥩+1</button>
                             <button id="subProtein" class="bg-blue-50 hover:bg-blue-100 text-blue-800 font-medium p-1 rounded-lg border border-blue-300 transition text-xs flex items-center">-1</button>
                         </div>
@@ -63,8 +63,8 @@
                 <div class="mb-4">
                     <div class="flex justify-between mb-1 items-center">
                         <span>蔬菜 (<span id="veggieCount">0</span>/3份)</span>
-                        <span id="veggiePercent">0%</span>
-                        <div class="flex flex-row items-center space-x-1 ml-2">
+                        <div class="flex items-center space-x-2 ml-auto">
+                            <span id="veggiePercent" class="flex items-center">0%</span>
                             <button id="addVeggie" class="bg-green-100 hover:bg-green-200 text-green-800 font-bold py-1 px-2 rounded-lg transition text-md flex items-center">🥦+1</button>
                             <button id="subVeggie" class="bg-green-50 hover:bg-green-100 text-green-800 font-medium p-1 rounded-lg border border-green-300 transition text-xs flex items-center">-1</button>
                         </div>
@@ -76,8 +76,8 @@
                 <div class="mb-4">
                     <div class="flex justify-between mb-1 items-center">
                         <span>水果 (<span id="fruitCount">0</span>/2份)</span>
-                        <span id="fruitPercent">0%</span>
-                        <div class="flex flex-row items-center space-x-1 ml-2">
+                        <div class="flex items-center space-x-2 ml-auto">
+                            <span id="fruitPercent" class="flex items-center">0%</span>
                             <button id="addFruit" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold py-1 px-2 rounded-lg transition text-md flex items-center">🍎+1</button>
                             <button id="subFruit" class="bg-yellow-50 hover:bg-yellow-100 text-yellow-800 font-medium p-1 rounded-lg border border-yellow-300 transition text-xs flex items-center">-1</button>
                         </div>
@@ -89,8 +89,8 @@
                 <div class="mb-4">
                     <div class="flex justify-between mb-1 items-center">
                         <span>澱粉 (<span id="starchCount">0</span>/2份)</span>
-                        <span id="starchPercent">0%</span>
-                        <div class="flex flex-row items-center space-x-1 ml-2">
+                        <div class="flex items-center space-x-2 ml-auto">
+                            <span id="starchPercent" class="flex items-center">0%</span>
                             <button id="addStarch" class="bg-orange-100 hover:bg-orange-200 text-orange-800 font-bold py-1 px-2 rounded-lg transition text-md flex items-center">🍚+1</button>
                             <button id="subStarch" class="bg-orange-50 hover:bg-orange-100 text-orange-800 font-medium p-1 rounded-lg border border-orange-300 transition text-xs flex items-center">-1</button>
                         </div>
@@ -190,7 +190,7 @@
                         <option value="游泳">游泳</option>
                         <option value="騎車">騎車</option>
                         <option value="重訓">重訓</option>
-                        <option value="其他">其他</option>
+                        <option value="其他">其他（如：羽球、排球）</option>
                     </select>
                 </div>
                 <div class="mb-4">
@@ -320,7 +320,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">起床日期</label>
-                        <input type="date" id="wakeDate" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100">
+                        <input type="date" id="wakeDate" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 mb-2">
                         <label class="block text-sm font-medium text-gray-700 mb-1 mt-2">起床時間</label>
                         <input type="time" id="sleepEnd" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
@@ -741,7 +741,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
-                    <div class="text-3xl font-bold mb-1">${bottle.capacity}cc</div>
+                    <div class="text-3xl font-bold mb-1">+${bottle.capacity}cc</div>
                     <div class="font-medium">${bottle.name}</div>
                 `;
                 bottleBtn.addEventListener('click', (e) => {
