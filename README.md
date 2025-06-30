@@ -48,36 +48,52 @@
             <div class="mb-6">
                 <h2 class="text-lg font-semibold mb-3">今日營養攝取</h2>
                 <div class="mb-4">
-                    <div class="flex justify-between mb-1">
+                    <div class="flex justify-between mb-1 items-center">
                         <span>蛋白質 (<span id="proteinCount">0</span>/6份)</span>
                         <span id="proteinPercent">0%</span>
+                        <div class="flex flex-row items-center space-x-1 ml-2">
+                            <button id="addProtein" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-1 px-2 rounded-lg transition text-md flex items-center">🥩+1</button>
+                            <button id="subProtein" class="bg-blue-50 hover:bg-blue-100 text-blue-800 font-medium p-1 rounded-lg border border-blue-300 transition text-xs flex items-center">-1</button>
+                        </div>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2.5">
                         <div id="proteinBar" class="progress-bar bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
                 <div class="mb-4">
-                    <div class="flex justify-between mb-1">
+                    <div class="flex justify-between mb-1 items-center">
                         <span>蔬菜 (<span id="veggieCount">0</span>/3份)</span>
                         <span id="veggiePercent">0%</span>
+                        <div class="flex flex-row items-center space-x-1 ml-2">
+                            <button id="addVeggie" class="bg-green-100 hover:bg-green-200 text-green-800 font-bold py-1 px-2 rounded-lg transition text-md flex items-center">🥦+1</button>
+                            <button id="subVeggie" class="bg-green-50 hover:bg-green-100 text-green-800 font-medium p-1 rounded-lg border border-green-300 transition text-xs flex items-center">-1</button>
+                        </div>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2.5">
                         <div id="veggieBar" class="progress-bar bg-green-500 h-2.5 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
                 <div class="mb-4">
-                    <div class="flex justify-between mb-1">
+                    <div class="flex justify-between mb-1 items-center">
                         <span>水果 (<span id="fruitCount">0</span>/2份)</span>
                         <span id="fruitPercent">0%</span>
+                        <div class="flex flex-row items-center space-x-1 ml-2">
+                            <button id="addFruit" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold py-1 px-2 rounded-lg transition text-md flex items-center">🍎+1</button>
+                            <button id="subFruit" class="bg-yellow-50 hover:bg-yellow-100 text-yellow-800 font-medium p-1 rounded-lg border border-yellow-300 transition text-xs flex items-center">-1</button>
+                        </div>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2.5">
                         <div id="fruitBar" class="progress-bar bg-yellow-500 h-2.5 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
                 <div class="mb-4">
-                    <div class="flex justify-between mb-1">
+                    <div class="flex justify-between mb-1 items-center">
                         <span>澱粉 (<span id="starchCount">0</span>/2份)</span>
                         <span id="starchPercent">0%</span>
+                        <div class="flex flex-row items-center space-x-1 ml-2">
+                            <button id="addStarch" class="bg-orange-100 hover:bg-orange-200 text-orange-800 font-bold py-1 px-2 rounded-lg transition text-md flex items-center">🍚+1</button>
+                            <button id="subStarch" class="bg-orange-50 hover:bg-orange-100 text-orange-800 font-medium p-1 rounded-lg border border-orange-300 transition text-xs flex items-center">-1</button>
+                        </div>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2.5">
                         <div id="starchBar" class="progress-bar bg-orange-500 h-2.5 rounded-full" style="width: 0%"></div>
@@ -86,24 +102,6 @@
             </div>
             <div class="mb-6">
                 <h2 class="text-lg font-semibold mb-3">新增飲食紀錄</h2>
-                <div class="grid grid-cols-4 gap-2 mb-4">
-                    <div class="flex flex-row items-center justify-center space-x-1">
-                        <button id="addProtein" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-3 rounded-lg transition text-md flex items-center">🥩+1</button>
-                        <button id="subProtein" class="bg-blue-50 hover:bg-blue-100 text-blue-800 font-medium p-1 rounded-lg border border-blue-300 transition text-xs flex items-center">-1</button>
-                    </div>
-                    <div class="flex flex-row items-center justify-center space-x-1">
-                        <button id="addVeggie" class="bg-green-100 hover:bg-green-200 text-green-800 font-bold py-2 px-3 rounded-lg transition text-md flex items-center">🥦+1</button>
-                        <button id="subVeggie" class="bg-green-50 hover:bg-green-100 text-green-800 font-medium p-1 rounded-lg border border-green-300 transition text-xs flex items-center">-1</button>
-                    </div>
-                    <div class="flex flex-row items-center justify-center space-x-1">
-                        <button id="addFruit" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold py-2 px-3 rounded-lg transition text-md flex items-center">🍎+1</button>
-                        <button id="subFruit" class="bg-yellow-50 hover:bg-yellow-100 text-yellow-800 font-medium p-1 rounded-lg border border-yellow-300 transition text-xs flex items-center">-1</button>
-                    </div>
-                    <div class="flex flex-row items-center justify-center space-x-1">
-                        <button id="addStarch" class="bg-orange-100 hover:bg-orange-200 text-orange-800 font-bold py-2 px-3 rounded-lg transition text-md flex items-center">🍚+1</button>
-                        <button id="subStarch" class="bg-orange-50 hover:bg-orange-100 text-orange-800 font-medium p-1 rounded-lg border border-orange-300 transition text-xs flex items-center">-1</button>
-                    </div>
-                </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">餐點名稱</label>
                     <input type="text" id="mealName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：早餐三明治">
@@ -164,9 +162,7 @@
                         <div id="waterBar" class="progress-bar bg-cyan-500 h-2.5 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
-                <div class="flex items-center justify-center my-4">
-                    <div class="water-drop text-5xl">💧</div>
-                </div>
+                <!-- 刪除水滴icon區塊 -->
             </div>
             <div class="mb-6">
                 <h2 class="text-lg font-semibold mb-3">我的水壺</h2>
@@ -323,7 +319,9 @@
                         <input type="time" id="sleepStart" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">起床時間</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">起床日期</label>
+                        <input type="date" id="wakeDate" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100">
+                        <label class="block text-sm font-medium text-gray-700 mb-1 mt-2">起床時間</label>
                         <input type="time" id="sleepEnd" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
@@ -734,32 +732,17 @@
                 `;
                 return;
             }
-            // 預設顏色組合
-            const colorPairs = [
-                { start: '#38bdf8', end: '#0ea5e9' },
-                { start: '#22d3ee', end: '#06b6d4' },
-                { start: '#2dd4bf', end: '#14b8a6' },
-                { start: '#4ade80', end: '#22c55e' },
-                { start: '#a3e635', end: '#84cc16' },
-                { start: '#facc15', end: '#eab308' }
-            ];
             bottles.forEach((bottle, index) => {
-                const colorIndex = index % colorPairs.length;
-                const colorPair = colorPairs[colorIndex];
                 const bottleBtn = document.createElement('div');
-                bottleBtn.className = 'bottle-btn relative p-4 rounded-lg text-white text-center cursor-pointer transition hover:shadow-lg';
-                bottleBtn.style.setProperty('--start-color', colorPair.start);
-                bottleBtn.style.setProperty('--end-color', colorPair.end);
-                bottleBtn.classList.add('bottle-colors');
+                bottleBtn.className = 'bottle-btn relative p-4 rounded-lg text-blue-900 text-center cursor-pointer transition hover:shadow-lg bg-blue-100';
                 bottleBtn.innerHTML = `
-                    <button class="absolute top-1 right-1 text-white opacity-70 hover:opacity-100 p-1" data-bottle-id="${bottle.id}">
+                    <button class="absolute top-1 right-1 text-blue-900 opacity-70 hover:opacity-100 p-1" data-bottle-id="${bottle.id}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
-                    <div class="text-2xl mb-1">🥤</div>
+                    <div class="text-3xl font-bold mb-1">${bottle.capacity}cc</div>
                     <div class="font-medium">${bottle.name}</div>
-                    <div class="text-sm opacity-80">${bottle.capacity}cc</div>
                 `;
                 bottleBtn.addEventListener('click', (e) => {
                     if (e.target.closest('button[data-bottle-id]')) {
@@ -818,10 +801,7 @@
             });
             localStorage.setItem('waterRecords', JSON.stringify(waterRecords));
             updateWaterDisplay();
-            const waterDrop = document.querySelector('.water-drop');
-            waterDrop.classList.remove('water-drop');
-            void waterDrop.offsetWidth;
-            waterDrop.classList.add('water-drop');
+            // 刪除水滴動畫
         }
         function updateWaterDisplay() {
             const dailyWater = JSON.parse(localStorage.getItem('dailyWater'));
@@ -1244,9 +1224,20 @@
         // --- 睡眠分頁 ---
         if (!localStorage.getItem('sleepRecords')) localStorage.setItem('sleepRecords', JSON.stringify([]));
         const sleepDateInput = document.getElementById('sleepDate');
+        // 新增起床日期欄位
+        if (!document.getElementById('wakeDate')) {
+            const sleepEnd = document.getElementById('sleepEnd');
+            const wakeDateInput = document.createElement('input');
+            wakeDateInput.type = 'date';
+            wakeDateInput.id = 'wakeDate';
+            wakeDateInput.className = 'w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 mb-2';
+            sleepEnd.parentNode.insertBefore(wakeDateInput, sleepEnd);
+        }
         function setTodaySleepDate() {
             const today = new Date();
             sleepDateInput.value = today.toISOString().split('T')[0];
+            const wakeDateInput = document.getElementById('wakeDate');
+            wakeDateInput.value = today.toISOString().split('T')[0];
         }
         setTodaySleepDate();
         const saveSleepBtn = document.getElementById('saveSleep');
@@ -1254,25 +1245,25 @@
             const date = sleepDateInput.value;
             const start = document.getElementById('sleepStart').value;
             const end = document.getElementById('sleepEnd').value;
+            const wakeDate = document.getElementById('wakeDate').value;
             const quality = parseInt(document.getElementById('sleepQuality').value);
-            if (!start || !end) {
-                alert('請填寫就寢與起床時間');
+            if (!start || !end || !wakeDate) {
+                alert('請填寫就寢與起床時間及日期');
                 return;
             }
-            // 計算時長（可跨日）
-            const [sh, sm] = start.split(':').map(Number);
-            const [eh, em] = end.split(':').map(Number);
-            let startMins = sh * 60 + sm;
-            let endMins = eh * 60 + em;
-            let duration = endMins - startMins;
+            // 跨日計算
+            const startDateTime = new Date(`${date}T${start}`);
+            const endDateTime = new Date(`${wakeDate}T${end}`);
+            let duration = (endDateTime - startDateTime) / 60000; // 分鐘
             if (duration <= 0) duration += 24 * 60;
             const hours = Math.floor(duration / 60);
-            const mins = duration % 60;
+            const mins = Math.round(duration % 60);
             const records = JSON.parse(localStorage.getItem('sleepRecords'));
-            records.push({ date, start, end, duration, quality, time: new Date().toISOString() });
+            records.push({ date, start, end, wakeDate, duration, quality, time: new Date().toISOString() });
             localStorage.setItem('sleepRecords', JSON.stringify(records));
             document.getElementById('sleepStart').value = '';
             document.getElementById('sleepEnd').value = '';
+            document.getElementById('wakeDate').value = '';
             document.getElementById('sleepQuality').value = '3';
             alert(`睡眠紀錄已儲存\n時長：${hours}小時${mins}分鐘`);
         });
