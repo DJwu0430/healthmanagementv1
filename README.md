@@ -647,33 +647,24 @@
                 const totalFruit = records.reduce((sum, record) => sum + (record.fruitCount || 0), 0);
                 const totalStarch = records.reduce((sum, record) => sum + (record.starchCount || 0), 0);
                 html += `
-                    <div class="mb-6">
-                        <div class="flex justify-between items-center mb-2">
-                            <h4 class="font-medium">${formatDate(date)}</h4>
-                            <div class="text-sm text-gray-500">
-                                <div>總花費: ${dailyStats[date].totalCost} 元</div>
-                                <div>總熱量: ${dailyStats[date].totalCalories} kcal</div>
+                    <div class="mb-6 border rounded overflow-hidden">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-0 bg-gray-100 px-4 py-2 cursor-pointer group" data-toggle-detail="${date}">
+                            <div class="flex items-center">
+                                <h4 class="font-medium mr-4">${formatDate(date)}</h4>
+                                <div class="flex space-x-3 text-xs">
+                                    <span class="text-blue-600 font-bold">蛋白質: ${totalProtein}</span>
+                                    <span class="text-green-600 font-bold">蔬菜: ${totalVeggie}</span>
+                                    <span class="text-yellow-600 font-bold">水果: ${totalFruit}</span>
+                                    <span class="text-orange-600 font-bold">澱粉: ${totalStarch}</span>
+                                </div>
                             </div>
+                            <div class="text-sm text-gray-500 text-right mt-2 sm:mt-0">
+                                <div>總花費: <span class="font-bold text-blue-900">${dailyStats[date].totalCost}</span> 元</div>
+                                <div>總熱量: <span class="font-bold text-red-600">${dailyStats[date].totalCalories}</span> kcal</div>
+                            </div>
+                            <span class="ml-2 text-gray-400 group-hover:text-blue-500 transition">▼</span>
                         </div>
-                        <div class="flex mb-3">
-                            <div class="flex-1 text-center">
-                                <div class="text-blue-600 font-bold">${totalProtein}</div>
-                                <div class="text-xs text-gray-500">蛋白質</div>
-                            </div>
-                            <div class="flex-1 text-center">
-                                <div class="text-green-600 font-bold">${totalVeggie}</div>
-                                <div class="text-xs text-gray-500">蔬菜</div>
-                            </div>
-                            <div class="flex-1 text-center">
-                                <div class="text-yellow-600 font-bold">${totalFruit}</div>
-                                <div class="text-xs text-gray-500">水果</div>
-                            </div>
-                            <div class="flex-1 text-center">
-                                <div class="text-orange-600 font-bold">${totalStarch}</div>
-                                <div class="text-xs text-gray-500">澱粉</div>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
+                        <div class="space-y-2 px-4 py-2 hidden detail-block" id="detail-${date}">
                 `;
                 records.sort((a, b) => a.mealTime.localeCompare(b.mealTime)).forEach(record => {
                     html += `
@@ -704,6 +695,16 @@
                 `;
             });
             showModal('飲食紀錄', html);
+            // 展開/收合功能
+            document.querySelectorAll('[data-toggle-detail]').forEach(el => {
+                el.addEventListener('click', function() {
+                    const date = this.getAttribute('data-toggle-detail');
+                    const detail = document.getElementById('detail-' + date);
+                    if (detail) {
+                        detail.classList.toggle('hidden');
+                    }
+                });
+            });
             // 新增事件代理
             document.getElementById('modalContent').onclick = function(e) {
                 if (e.target.classList.contains('delete-record-btn')) {
@@ -836,17 +837,18 @@
                 const totalIntake = dailyTotals[date];
                 const percent = Math.min(totalIntake / 2000 * 100, 100);
                 html += `
-                    <div class="mb-6">
-                        <div class="flex justify-between items-center mb-2">
+                    <div class="mb-6 border rounded overflow-hidden">
+                        <div class="flex justify-between items-center mb-0 bg-gray-100 px-4 py-2 cursor-pointer group" data-toggle-detail="${date}">
                             <h4 class="font-medium">${formatDate(date)}</h4>
-                            <div class="text-sm text-gray-500">
+                            <div class="text-sm text-gray-500 text-right">
                                 總飲水量: ${totalIntake}cc (${Math.round(percent)}%)
                             </div>
+                            <span class="ml-2 text-gray-400 group-hover:text-blue-500 transition">▼</span>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3 px-4 mt-2">
                             <div class="bg-cyan-500 h-2.5 rounded-full" style="width: ${percent}%"></div>
                         </div>
-                        <div class="space-y-2">
+                        <div class="space-y-2 px-4 py-2 hidden detail-block" id="detail-${date}">
                 `;
                 records.sort((a, b) => a.timestamp - b.timestamp).forEach(record => {
                     const time = new Date(record.timestamp).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
@@ -871,6 +873,16 @@
                 `;
             });
             showModal('飲水紀錄', html);
+            // 展開/收合功能
+            document.querySelectorAll('[data-toggle-detail]').forEach(el => {
+                el.addEventListener('click', function() {
+                    const date = this.getAttribute('data-toggle-detail');
+                    const detail = document.getElementById('detail-' + date);
+                    if (detail) {
+                        detail.classList.toggle('hidden');
+                    }
+                });
+            });
             document.getElementById('modalContent').onclick = function(e) {
                 if (e.target.classList.contains('delete-record-btn')) {
                     const idx = parseInt(e.target.getAttribute('data-idx'));
