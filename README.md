@@ -140,12 +140,18 @@
                 </div>
                 <button id="saveMeal" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition">儲存飲食紀錄</button>
             </div>
-            <div class="mt-6">
+            <div class="mt-6 space-y-2">
                 <button id="viewDietRecords" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-md transition flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                     </svg>
                     查看飲食紀錄
+                </button>
+                <button id="resetDailyNutrition" class="w-full bg-red-100 hover:bg-red-200 text-red-800 font-medium py-2 px-4 rounded-md transition flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    重置今日營養數據
                 </button>
             </div>
         </div>
@@ -169,12 +175,18 @@
                 <div id="bottleContainer" class="grid grid-cols-2 gap-3 mb-4"></div>
                 <button id="addBottleBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition mt-2">新增水壺</button>
             </div>
-            <div class="mt-6">
+            <div class="mt-6 space-y-2">
                 <button id="viewWaterRecords" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-md transition flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                     </svg>
                     查看飲水紀錄
+                </button>
+                <button id="resetDailyWater" class="w-full bg-red-100 hover:bg-red-200 text-red-800 font-medium py-2 px-4 rounded-md transition flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    重置今日飲水數據
                 </button>
             </div>
         </div>
@@ -445,13 +457,21 @@
         }
         function getCurrentDateString() {
             const now = new Date();
-            return now.toISOString().split('T')[0];
+            // 使用本地時間而不是 UTC 時間，避免時區問題
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
         function checkAndUpdateDailyData() {
             const today = getCurrentDateString();
+            console.log('檢查日期更新，今天日期:', today);
+            
             // 檢查營養攝取
             const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
+            console.log('當前營養記錄日期:', dailyNutrition.date);
             if (dailyNutrition.date !== today) {
+                console.log('日期已變更，重置營養數據');
                 dailyNutrition.date = today;
                 dailyNutrition.protein = 0;
                 dailyNutrition.veggie = 0;
@@ -459,13 +479,17 @@
                 dailyNutrition.starch = 0;
                 localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
             }
+            
             // 檢查飲水量
             const dailyWater = JSON.parse(localStorage.getItem('dailyWater'));
+            console.log('當前飲水記錄日期:', dailyWater.date);
             if (dailyWater.date !== today) {
+                console.log('日期已變更，重置飲水數據');
                 dailyWater.date = today;
                 dailyWater.intake = 0;
                 localStorage.setItem('dailyWater', JSON.stringify(dailyWater));
             }
+            
             updateNutritionDisplay();
             updateWaterDisplay();
             renderBottles();
@@ -545,20 +569,33 @@
         });
         const saveMealBtn = document.getElementById('saveMeal');
         const viewDietRecordsBtn = document.getElementById('viewDietRecords');
+        const resetDailyNutritionBtn = document.getElementById('resetDailyNutrition');
         function updateNutritionDisplay() {
             const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
-            document.getElementById('proteinCount').textContent = dailyNutrition.protein;
-            document.getElementById('veggieCount').textContent = dailyNutrition.veggie;
-            document.getElementById('fruitCount').textContent = dailyNutrition.fruit;
-            document.getElementById('starchCount').textContent = dailyNutrition.starch;
-            const proteinPercent = Math.min(dailyNutrition.protein / 6 * 100, 100);
-            const veggiePercent = Math.min(dailyNutrition.veggie / 3 * 100, 100);
-            const fruitPercent = Math.min(dailyNutrition.fruit / 2 * 100, 100);
-            const starchPercent = Math.min(dailyNutrition.starch / 2 * 100, 100);
+            console.log('更新營養顯示:', dailyNutrition);
+            
+            // 確保數據存在
+            if (!dailyNutrition) {
+                console.log('營養數據不存在，重新初始化');
+                checkAndUpdateDailyData();
+                return;
+            }
+            
+            document.getElementById('proteinCount').textContent = dailyNutrition.protein || 0;
+            document.getElementById('veggieCount').textContent = dailyNutrition.veggie || 0;
+            document.getElementById('fruitCount').textContent = dailyNutrition.fruit || 0;
+            document.getElementById('starchCount').textContent = dailyNutrition.starch || 0;
+            
+            const proteinPercent = Math.min((dailyNutrition.protein || 0) / 6 * 100, 100);
+            const veggiePercent = Math.min((dailyNutrition.veggie || 0) / 3 * 100, 100);
+            const fruitPercent = Math.min((dailyNutrition.fruit || 0) / 2 * 100, 100);
+            const starchPercent = Math.min((dailyNutrition.starch || 0) / 2 * 100, 100);
+            
             document.getElementById('proteinPercent').textContent = `${Math.round(proteinPercent)}%`;
             document.getElementById('veggiePercent').textContent = `${Math.round(veggiePercent)}%`;
             document.getElementById('fruitPercent').textContent = `${Math.round(fruitPercent)}%`;
             document.getElementById('starchPercent').textContent = `${Math.round(starchPercent)}%`;
+            
             document.getElementById('proteinBar').style.width = `${proteinPercent}%`;
             document.getElementById('veggieBar').style.width = `${veggiePercent}%`;
             document.getElementById('fruitBar').style.width = `${fruitPercent}%`;
@@ -611,6 +648,20 @@
             document.getElementById('mealFruit').value = '0';
             document.getElementById('mealStarch').value = '0';
             alert('飲食紀錄已儲存');
+        });
+        
+        // 重置今日營養數據
+        resetDailyNutritionBtn.addEventListener('click', () => {
+            if (confirm('確定要重置今日的營養數據嗎？此操作無法復原。')) {
+                const dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition'));
+                dailyNutrition.protein = 0;
+                dailyNutrition.veggie = 0;
+                dailyNutrition.fruit = 0;
+                dailyNutrition.starch = 0;
+                localStorage.setItem('dailyNutrition', JSON.stringify(dailyNutrition));
+                updateNutritionDisplay();
+                alert('今日營養數據已重置');
+            }
         });
         viewDietRecordsBtn.addEventListener('click', () => {
             const dietRecords = JSON.parse(localStorage.getItem('dietRecords'));
@@ -719,6 +770,7 @@
         // --- 飲水分頁 ---
         const addBottleBtn = document.getElementById('addBottleBtn');
         const viewWaterRecordsBtn = document.getElementById('viewWaterRecords');
+        const resetDailyWaterBtn = document.getElementById('resetDailyWater');
         const saveBottleBtn = document.getElementById('saveBottle');
         const closeBottleModalBtn = document.getElementById('closeBottleModal');
         function renderBottles() {
@@ -806,7 +858,16 @@
         }
         function updateWaterDisplay() {
             const dailyWater = JSON.parse(localStorage.getItem('dailyWater'));
-            const intake = dailyWater.intake;
+            console.log('更新飲水顯示:', dailyWater);
+            
+            // 確保數據存在
+            if (!dailyWater) {
+                console.log('飲水數據不存在，重新初始化');
+                checkAndUpdateDailyData();
+                return;
+            }
+            
+            const intake = dailyWater.intake || 0;
             const percent = Math.min(intake / 2000 * 100, 100);
             document.getElementById('waterIntake').textContent = intake;
             document.getElementById('waterPercent').textContent = `${Math.round(percent)}%`;
@@ -893,6 +954,18 @@
                 }
             };
         });
+        
+        // 重置今日飲水數據
+        resetDailyWaterBtn.addEventListener('click', () => {
+            if (confirm('確定要重置今日的飲水數據嗎？此操作無法復原。')) {
+                const dailyWater = JSON.parse(localStorage.getItem('dailyWater'));
+                dailyWater.intake = 0;
+                localStorage.setItem('dailyWater', JSON.stringify(dailyWater));
+                updateWaterDisplay();
+                alert('今日飲水數據已重置');
+            }
+        });
+        
         // --- 運動分頁 ---
         if (!localStorage.getItem('exerciseRecords')) localStorage.setItem('exerciseRecords', JSON.stringify([]));
         const exerciseType = document.getElementById('exerciseType');
@@ -1340,8 +1413,27 @@
             const date = new Date(dateString);
             return date.toLocaleDateString('zh-TW', { month: 'long', day: 'numeric' });
         }
+        // 頁面載入時立即檢查並更新數據
+        checkAndUpdateDailyData();
+        
         // 每分鐘自動檢查日期是否變更，確保每日歸零
         setInterval(checkAndUpdateDailyData, 60 * 1000);
+        
+        // 頁面獲得焦點時也檢查一次（解決切換分頁後數據不更新的問題）
+        window.addEventListener('focus', checkAndUpdateDailyData);
+        
+        // 頁面可見性變化時檢查（解決從其他分頁回來時的問題）
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                checkAndUpdateDailyData();
+            }
+        });
+        
+        // 添加調試功能（按 F12 打開開發者工具查看 console 輸出）
+        console.log('健康管理系統已載入');
+        console.log('當前日期:', getCurrentDateString());
+        console.log('營養數據:', JSON.parse(localStorage.getItem('dailyNutrition')));
+        console.log('飲水數據:', JSON.parse(localStorage.getItem('dailyWater')));
     });
     </script>
 </body>
