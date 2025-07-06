@@ -32,7 +32,7 @@
         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4 text-white">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-4">
-                    <h1 class="text-lg font-bold truncate">健康管理</h1>
+                    <h1 class="text-lg font-bold truncate">管家</h1>
                     <div id="currentDate" class="text-sm font-medium"></div>
                 </div>
                 <!-- 通知鈴鐺區塊，確保在最右側 -->
@@ -425,7 +425,9 @@
         // 設置當前日期
         const now = new Date();
         const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-        document.getElementById('currentDate').textContent = now.toLocaleDateString('zh-TW', options);
+        const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
+        const weekStr = now.toLocaleDateString('zh-TW', { weekday: 'long' });
+        document.getElementById('currentDate').innerHTML = dateStr + '<br><span class="text-xs">' + weekStr + '</span>';
 
         // 分頁切換初始化
         const tabs = document.querySelectorAll('.tab');
