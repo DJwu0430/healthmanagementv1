@@ -358,6 +358,11 @@
                 </button>
             </div>
         </div>
+        <!-- 在適當位置插入Excel上傳input -->
+        <div class="p-2">
+          <input type="file" id="excelInput" accept=".xlsx,.xls,.csv" class="mb-4" />
+          <span class="text-xs text-gray-500">（上傳跨模組建議語句Excel，條件成立才會通知）</span>
+        </div>
     </div>
     <!-- 紀錄查看模態框 -->
     <div id="recordsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
@@ -399,6 +404,7 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // 設置當前日期
@@ -1434,7 +1440,94 @@
         console.log('當前日期:', getCurrentDateString());
         console.log('營養數據:', JSON.parse(localStorage.getItem('dailyNutrition')));
         console.log('飲水數據:', JSON.parse(localStorage.getItem('dailyWater')));
+
+        // 通知UI與管理
+        function renderNotifications() {
+          const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+          const unread = notifications.filter(n => !n.read).length;
+          document.getElementById('notificationBadge').textContent = unread;
+          document.getElementById('notificationBadge').style.display = unread ? 'block' : 'none';
+          const list = notifications.map(n => `
+            <div class="p-3 border-b ${n.read ? '' : 'bg-blue-50 font-bold'} cursor-pointer" data-id="${n.id}">
+              <div>${n.title}</div>
+              <div class="text-xs text-gray-500">${new Date(n.timestamp).toLocaleString('zh-TW')}</div>
+              <div class="text-sm">${n.message}</div>
+            </div>
+          `).join('');
+          document.getElementById('notificationList').innerHTML = list || '<div class="p-4 text-gray-400 text-center">目前沒有通知</div>';
+          document.querySelectorAll('#notificationList [data-id]').forEach(el => {
+            el.onclick = function() {
+              const id = this.getAttribute('data-id');
+              const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+              const idx = notifications.findIndex(n => n.id === id);
+              if (idx > -1) {
+                notifications[idx].read = true;
+                localStorage.setItem('notifications', JSON.stringify(notifications));
+                renderNotifications();
+              }
+            }
+          });
+        }
+        function addNotification(title, message) {
+          const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+          // 避免重複通知
+          if (notifications.some(n => n.message === message)) return;
+          notifications.unshift({
+            id: Date.now().toString() + Math.random().toString(36).slice(2),
+            title,
+            message,
+            timestamp: Date.now(),
+            read: false
+          });
+          localStorage.setItem('notifications', JSON.stringify(notifications));
+          renderNotifications();
+        }
+        document.getElementById('notificationBtn').onclick = function() {
+          document.getElementById('notificationDropdown').classList.toggle('hidden');
+          renderNotifications();
+        };
+        // Excel自動化通知
+        // 取得健康數據（根據localStorage結構調整）
+        function getHealthVars() {
+          let dailyNutrition = JSON.parse(localStorage.getItem('dailyNutrition') || '{}');
+          let 蛋白質 = dailyNutrition.protein || 0;
+          let 蔬菜 = dailyNutrition.veggie || 0;
+          let 水果 = dailyNutrition.fruit || 0;
+          let 澱粉 = dailyNutrition.starch || 0;
+          let dailyWater = JSON.parse(localStorage.getItem('dailyWater') || '{}');
+          let 飲水量 = dailyWater.intake || 0;
+          // 其他變數可依需求擴充
+          return { 蛋白質, 蔬菜, 水果, 澱粉, 飲水量 };
+        }
+        document.getElementById('excelInput').addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            const data = evt.target.result;
+            const workbook = XLSX.read(data, {type: 'binary'});
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const rows = XLSX.utils.sheet_to_json(sheet, {defval: ''});
+            const healthVars = getHealthVars();
+            rows.forEach(row => {
+              const condition = row['傳送通知訊息的條件'];
+              const message = row['通知使用者的建議訊息內容'];
+              if (!condition || !message) return;
+              let shouldNotify = false;
+              try {
+                // 用with將healthVars變數帶入eval作用域
+                shouldNotify = (function() { with(healthVars) { return eval(condition); } })();
+              } catch (e) {}
+              if (shouldNotify) {
+                addNotification('健康建議', message);
+              }
+            });
+          };
+          reader.readAsBinaryString(file);
+        });
+        // 頁面載入時初始化通知
+        renderNotifications();
     });
     </script>
 </body>
-</html> 
+</html>
