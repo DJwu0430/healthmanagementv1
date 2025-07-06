@@ -31,8 +31,23 @@
         <!-- 頂部日期顯示 -->
         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4 text-white">
             <div class="flex justify-between items-center">
-                <h1 class="text-xl font-bold">健康管理</h1>
-                <div id="currentDate" class="text-sm font-medium"></div>
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-bold">健康管理</h1>
+                    <div id="currentDate" class="text-sm font-medium"></div>
+                </div>
+                <!-- 通知鈴鐺區塊，確保在最右側 -->
+                <div class="relative ml-2">
+                    <button id="notificationBtn" class="relative">
+                        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span id="notificationBadge" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1 hidden">0</span>
+                    </button>
+                    <div id="notificationDropdown" class="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg z-50 hidden">
+                        <div class="p-4 border-b font-bold text-blue-900">通知中心</div>
+                        <div id="notificationList" class="max-h-80 overflow-y-auto"></div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- 分頁導航 -->
