@@ -32,7 +32,7 @@
         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4 text-white">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-4">
-                    <h1 class="text-xl font-bold">健康管理</h1>
+                    <h1 class="text-lg font-bold truncate">健康管理</h1>
                     <div id="currentDate" class="text-sm font-medium"></div>
                 </div>
                 <!-- 通知鈴鐺區塊，確保在最右側 -->
@@ -1545,4 +1545,4 @@
     });
     </script>
 </body>
-</html>
+</html> 
