@@ -1598,6 +1598,19 @@
         setInterval(checkScheduledNotifications, 60 * 1000);
         // 頁面載入時也檢查一次，避免剛好在提醒時間點打開頁面而錯過
         checkScheduledNotifications();
+
+        function checkScheduledExcelNotifications() {
+          const now = new Date();
+          const hour = now.getHours();
+          const minute = now.getMinutes();
+          const todayStr = getCurrentDateString();
+          const key = 'excelChecked_' + todayStr;
+          if (hour === 16 && minute === 0 && !localStorage.getItem(key)) {
+            checkExcelNotificationRules();
+            localStorage.setItem(key, '1');
+          }
+        }
+        setInterval(checkScheduledExcelNotifications, 60 * 1000);
     });
     </script>
 </body>
