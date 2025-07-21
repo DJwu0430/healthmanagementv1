@@ -1062,6 +1062,10 @@
             Array.from(document.querySelectorAll('.strength-part')).forEach(e=>e.checked=false);
             strengthSetsContainer.innerHTML = '';
             alert('運動紀錄已儲存');
+            // 新增：運動後30分鐘提醒喝水
+            setTimeout(function() {
+                addNotification('飲水提醒', '運動後記得補充充足水分');
+            }, 30 * 60 * 1000);
         });
         const viewExerciseRecordsBtn = document.getElementById('viewExerciseRecords');
         viewExerciseRecordsBtn.addEventListener('click', function() {
