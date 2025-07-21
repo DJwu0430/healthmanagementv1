@@ -32,7 +32,7 @@
         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4 text-white">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-4">
-                    <h1 class="text-lg font-bold truncate">健康管理</h1>
+                    <h1 class="text-lg font-bold truncate">管家</h1>
                     <div id="currentDate" class="text-sm font-medium"></div>
                 </div>
                 <!-- 通知鈴鐺區塊，確保在最右側 -->
@@ -1544,6 +1544,51 @@
         });
         // 頁面載入時初始化通知
         renderNotifications();
+ 
+        // --- 新增：定時提醒功能 ---
+        function checkScheduledNotifications() {
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            const todayStr = getCurrentDateString();
+ 
+            const schedule = [
+                { id: 'morning', hour: 9, minute: 0, messages: [
+                    { title: '睡眠記錄提醒', message: '提醒您，記得記錄昨晚的睡眠狀況喔！' },
+                    { title: '飲食記錄提醒', message: '早安！別忘了記錄今天的早餐～' }
+                ]},
+                { id: 'noon', hour: 12, minute: 30, messages: [
+                    { title: '飲食記錄提醒', message: '午餐時間到囉，記得記錄飲食內容！' },
+                    { title: '飲水記錄提醒', message: '多喝水，維持身體機能！' }
+                ]},
+                { id: 'afternoon', hour: 17, minute: 30, messages: [
+                    { title: '飲水記錄提醒', message: '今天喝水達標了嗎？別忘了記錄飲水量。' },
+                    { title: '運動記錄提醒', message: '下班後要不要動一動？記錄運動，更有成就感！' }
+                ]},
+                { id: 'evening', hour: 20, minute: 0, messages: [
+                    { title: '飲食記錄提醒', message: '晚餐吃了什麼呢？快來記錄一下吧！' },
+                    { title: '飲水記錄提醒', message: '睡前別忘了補充今日最後一杯水喔！' }
+                ]}
+            ];
+ 
+            let sentTodayKey = 'sentNotifications_' + todayStr;
+            let sentToday = JSON.parse(localStorage.getItem(sentTodayKey) || '[]');
+ 
+            schedule.forEach(item => {
+                if (hour === item.hour && minute === item.minute && !sentToday.includes(item.id)) {
+                    item.messages.forEach(msg => {
+                        addNotification(msg.title, msg.message);
+                    });
+                    sentToday.push(item.id);
+                    localStorage.setItem(sentTodayKey, JSON.stringify(sentToday));
+                }
+            });
+        }
+ 
+        // 每分鐘檢查一次是否有排程通知
+        setInterval(checkScheduledNotifications, 60 * 1000);
+        // 頁面載入時也檢查一次，避免剛好在提醒時間點打開頁面而錯過
+        checkScheduledNotifications();
     });
     </script>
 </body>
